@@ -1,0 +1,286 @@
+{% extends 'petugas/base.html' %}
+
+{% block content %}
+<style>
+    div.dataTables_wrapper div.dataTables_filter input {
+        border-radius: 8px;
+        border: 1px solid #dee2e6;
+        padding: 6px 12px;
+    }
+    
+    div.dataTables_wrapper div.dataTables_length select {
+        border-radius: 8px;
+        border: 1px solid #dee2e6;
+    }
+
+    table.dataTable>thead>tr>th {
+        font-size: 0.85rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        color: #4b5563;
+        border-bottom: 2px solid #e5e7eb;
+    }
+
+    .nav-tabs .nav-link {
+        color: #6c757d;
+        font-weight: 600;
+        border: none;
+        border-bottom: 3px solid transparent;
+        padding: 12px 20px;
+    }
+
+    .nav-tabs .nav-link.active {
+        color: #d39e00;
+        border-bottom: 3px solid #d39e00;
+        background: transparent;
+    }
+</style>
+
+<div class="mb-4">
+    <h4 class="fw-bold text-dark mb-0">Antrean Verifikasi</h4>
+    <p class="text-muted mb-0">Kelola dan periksa berkas pengajuan masyarakat berdasarkan kategori layanan.</p>
+</div>
+
+<div class="card border-0 shadow-sm overflow-hidden mb-5">
+    <div class="card-header bg-white pt-3 pb-0 border-bottom">
+        <ul class="nav nav-tabs" id="verifikasiTab" role="tablist">
+            <li class="nav-item">
+                <button class="nav-link active" id="akta-tab" data-bs-toggle="tab" data-bs-target="#tab-akta" type="button">
+                    <i class="fa-solid fa-file-signature me-1"></i> Akta Kematian
+                </button>
+            </li>
+            <li class="nav-item">
+                <button class="nav-link" id="pindah-tab" data-bs-toggle="tab" data-bs-target="#tab-pindah" type="button">
+                    <i class="fa-solid fa-truck-fast me-1"></i> Surat Pindah
+                </button>
+            </li>
+            <li class="nav-item">
+                <button class="nav-link" id="izin-tab" data-bs-toggle="tab" data-bs-target="#tab-izin" type="button">
+                    <i class="fa-solid fa-house-user me-1"></i> Izin Tinggal
+                </button>
+            </li>
+        </ul>
+    </div>
+    <div class="card-body">
+        <div class="tab-content" id="verifikasiTabContent">
+            
+            <div class="tab-pane fade show active" id="tab-akta" role="tabpanel">
+                <div class="table-responsive">
+                    <table id="tabelAkta" class="table table-hover table-sm align-middle w-100">
+                        <thead class="table-light">
+                            <tr>
+                                <th class="text-center">No</th>
+                                <th>ID Pengajuan</th>
+                                <th>Nama Pemohon</th>
+                                <th>Tanggal Pengajuan</th>
+                                <th>Status</th>
+                                <th class="text-center">Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% set no_akta = namespace(value=1) %}
+                            {% for item in data_pengajuan if item.jenis_layanan == 'Akta Kematian' %}
+                            <tr>
+                                <td class="text-center">{{ no_akta.value }}</td>
+                                <td>#{{ item.id_p }}</td>
+                                <td>{{ item.nama_pemohon }}</td>
+                                <td>{{ item.tanggal_pengajuan_rifa.strftime('%d %b %Y, %H:%M') }} WIB</td>
+                                <td>
+                                    {% if item.status_pengajuan_rifa == 'menunggu' %}
+                                        <span class="badge bg-warning text-dark px-3 py-2"><i class="fa-regular fa-clock me-1"></i> Menunggu</span>
+                                    {% elif item.status_pengajuan_rifa == 'diproses' %}
+                                        <span class="badge bg-info text-white px-3 py-2"><i class="fa-solid fa-spinner fa-spin me-1"></i> Diproses</span>
+                                    {% elif item.status_pengajuan_rifa == 'disetujui' %}
+                                        <span class="badge bg-success px-3 py-2"><i class="fa-solid fa-circle-check me-1"></i> Disetujui</span>
+                                    {% else %}
+                                        <span class="badge bg-danger px-3 py-2"><i class="fa-solid fa-circle-xmark me-1"></i> Ditolak</span>
+                                    {% endif %}
+                                </td>
+                                <td class="text-center">
+                                    <div class="d-flex justify-content-center gap-2">
+                                        {% if item.status_pengajuan_rifa in ['menunggu', 'diproses'] %}
+                                            <a href="{{ url_for('detail_verifikasi_akta', id_p=item.id_p) }}" 
+                                            class="btn btn-sm btn-warning text-dark shadow-sm" 
+                                            title="Lakukan Verifikasi">
+                                                <i class="fa-solid fa-clipboard-check me-1"></i> Verifikasi
+                                            </a>
+                                        {% else %}
+                                            <a href="{{ url_for('detail_verifikasi_akta', id_p=item.id_p) }}" 
+                                            class="btn btn-sm btn-primary text-white shadow-sm" 
+                                            title="Lihat Detail Verifikasi">
+                                                <i class="fa-solid fa-eye me-1"></i> Detail
+                                            </a>
+                                            
+                                            {% if item.status_pengajuan_rifa == 'disetujui' %}
+                                                <a href="{{ url_for('cetak_akta_kematian', id_p=item.id_p) }}" target="_blank" class="btn btn-sm btn-success text-white px-3 shadow-sm" title="Cetak Dokumen">
+                                                    <i class="fa-solid fa-file-pdf me-1"></i> Cetak
+                                                </a>
+                                            {% endif %}
+                                        {% endif %}
+                                    </div>
+                                </td>
+                            </tr>
+                            {% set no_akta.value = no_akta.value + 1 %}
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="tab-pane fade" id="tab-pindah" role="tabpanel">
+                <div class="table-responsive">
+                    <table id="tabelPindah" class="table table-hover table-sm align-middle w-100">
+                        <thead class="table-light">
+                            <tr>
+                                <th class="text-center">No</th>
+                                <th>ID Pengajuan</th>
+                                <th>Nama Pemohon</th>
+                                <th>Tanggal Pengajuan</th>
+                                <th>Status</th>
+                                <th class="text-center">Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% set no_pindah = namespace(value=1) %}
+                            {% for item in data_pengajuan if item.jenis_layanan == 'Surat Pindah' %}
+                            <tr>
+                                <td class="text-center">{{ no_pindah.value }}</td>
+                                <td>#{{ item.id_p }}</td>
+                                <td>{{ item.nama_pemohon }}</td>
+                                <td>{{ item.tanggal_pengajuan_rifa.strftime('%d %b %Y, %H:%M') }} WIB</td>
+                                <td>
+                                    {% if item.status_pengajuan_rifa == 'menunggu' %}
+                                        <span class="badge bg-warning text-dark px-3 py-2"><i class="fa-regular fa-clock me-1"></i> Menunggu</span>
+                                    {% elif item.status_pengajuan_rifa == 'diproses' %}
+                                        <span class="badge bg-info text-white px-3 py-2"><i class="fa-solid fa-spinner fa-spin me-1"></i> Diproses</span>
+                                    {% elif item.status_pengajuan_rifa == 'disetujui' %}
+                                        <span class="badge bg-success px-3 py-2"><i class="fa-solid fa-circle-check me-1"></i> Disetujui</span>
+                                    {% else %}
+                                        <span class="badge bg-danger px-3 py-2"><i class="fa-solid fa-circle-xmark me-1"></i> Ditolak</span>
+                                    {% endif %}
+                                </td>
+                                <td class="text-center">
+                                    <div class="d-flex justify-content-center gap-2">
+                                        {% if item.status_pengajuan_rifa in ['menunggu', 'diproses'] %}
+                                            <a href="{{ url_for('detail_verifikasi_pindah', id_p=item.id_p) }}" 
+                                            class="btn btn-sm btn-warning text-dark shadow-sm" 
+                                            title="Lakukan Verifikasi">
+                                                <i class="fa-solid fa-clipboard-check me-1"></i> Verifikasi
+                                            </a>
+                                        {% else %}
+                                            <a href="{{ url_for('detail_verifikasi_pindah', id_p=item.id_p) }}" 
+                                            class="btn btn-sm btn-primary text-white shadow-sm" 
+                                            title="Lihat Detail Verifikasi">
+                                                <i class="fa-solid fa-eye me-1"></i> Detail
+                                            </a>
+                                            
+                                            {% if item.status_pengajuan_rifa == 'disetujui' %}
+                                                <a href="{{ url_for('cetak_surat_pindah', id_p=item.id_p) }}" target="_blank" class="btn btn-sm btn-success text-white px-3 shadow-sm" title="Cetak Dokumen">
+                                                    <i class="fa-solid fa-file-pdf me-1"></i> Cetak
+                                                </a>
+                                            {% endif %}
+                                        {% endif %}
+                                    </div>
+                                </td>
+                            </tr>
+                            {% set no_pindah.value = no_pindah.value + 1 %}
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="tab-pane fade" id="tab-izin" role="tabpanel">
+                <div class="table-responsive">
+                    <table id="tabelIzin" class="table table-hover table-sm align-middle w-100">
+                        <thead class="table-light">
+                            <tr>
+                                <th class="text-center">No</th>
+                                <th>ID Pengajuan</th>
+                                <th>Nama Pemohon</th>
+                                <th>Tanggal Pengajuan</th>
+                                <th>Status</th>
+                                <th class="text-center">Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% set no_izin = namespace(value=1) %}
+                            {% for item in data_pengajuan if item.jenis_layanan == 'Izin Tinggal' %}
+                            <tr>
+                                <td class="text-center">{{ no_izin.value }}</td>
+                                <td>#{{ item.id_p }}</td>
+                                <td>{{ item.nama_pemohon }}</td>
+                                <td>{{ item.tanggal_pengajuan_rifa.strftime('%d %b %Y, %H:%M') }} WIB</td>
+                                <td>
+                                    {% if item.status_pengajuan_rifa == 'menunggu' %}
+                                        <span class="badge bg-warning text-dark px-3 py-2"><i class="fa-regular fa-clock me-1"></i> Menunggu</span>
+                                    {% elif item.status_pengajuan_rifa == 'diproses' %}
+                                        <span class="badge bg-info text-white px-3 py-2"><i class="fa-solid fa-spinner fa-spin me-1"></i> Diproses</span>
+                                    {% elif item.status_pengajuan_rifa == 'disetujui' %}
+                                        <span class="badge bg-success px-3 py-2"><i class="fa-solid fa-circle-check me-1"></i> Disetujui</span>
+                                    {% else %}
+                                        <span class="badge bg-danger px-3 py-2"><i class="fa-solid fa-circle-xmark me-1"></i> Ditolak</span>
+                                    {% endif %}
+                                </td>
+                                <td class="text-center">
+                                    <div class="d-flex justify-content-center gap-2">
+                                        {% if item.status_pengajuan_rifa in ['menunggu', 'diproses'] %}
+                                            <a href="{{ url_for('detail_verifikasi_izin', id_p=item.id_p) }}" 
+                                            class="btn btn-sm btn-warning text-dark shadow-sm" 
+                                            title="Lakukan Verifikasi">
+                                                <i class="fa-solid fa-clipboard-check me-1"></i> Verifikasi
+                                            </a>
+                                        {% else %}
+                                            <a href="{{ url_for('detail_verifikasi_izin', id_p=item.id_p) }}" 
+                                            class="btn btn-sm btn-primary text-white shadow-sm" 
+                                            title="Lihat Detail Verifikasi">
+                                                <i class="fa-solid fa-eye me-1"></i> Detail
+                                            </a>
+                                            
+                                            {% if item.status_pengajuan_rifa == 'disetujui' %}
+                                                <a href="{{ url_for('cetak_izin_tinggal', id_p=item.id_p) }}" target="_blank" class="btn btn-sm btn-success text-white shadow-sm" title="Cetak Surat Izin">
+                                                    <i class="fa-solid fa-file-pdf me-1"></i> Cetak
+                                                </a>
+                                            {% endif %}
+                                        {% endif %}
+                                    </div>
+                                </td>
+                            </tr>
+                            {% set no_izin.value = no_izin.value + 1 %}
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    $(document).ready(function() {
+        const config = {
+            "language": {
+                "search": "Cari Antrean:",
+                "lengthMenu": "Tampilkan _MENU_ baris",
+                "info": "Menampilkan _START_ - _END_ dari _TOTAL_ data",
+                "zeroRecords": "Tidak ada antrean yang ditemukan.",
+                "paginate": { "first": "Awal", "last": "Akhir", "next": "Lanjut", "previous": "Kembali" }
+            },
+            "order": [[ 1, "desc" ]],
+            "columnDefs": [{ "orderable": false, "targets": [5] }]
+        };
+
+        $('#tabelAkta').DataTable(config);
+        $('#tabelPindah').DataTable(config);
+        $('#tabelIzin').DataTable(config);
+
+        $('button[data-bs-toggle="tab"]').on('shown.bs.tab', function () {
+            $($.fn.dataTable.tables(true)).DataTable().columns.adjust();
+        });
+    });
+</script>
+{% endblock %}

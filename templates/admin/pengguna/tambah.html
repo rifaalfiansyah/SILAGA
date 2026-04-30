@@ -1,0 +1,192 @@
+{% extends 'admin/base.html' %}
+
+{% block content %}
+<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/select2-bootstrap-5-theme@1.3.0/dist/select2-bootstrap-5-theme.min.css" />
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <div>
+        <h3 class="fw-bold text-dark mb-0">Tambah Data Penduduk</h3>
+    </div>
+    <div>
+        <a href="{{ url_for('data_penduduk_admin') }}" class="btn btn-light border fw-semibold shadow-sm px-4">
+            <i class="fa-solid fa-arrow-left"></i> Kembali
+        </a>
+    </div>
+</div>
+
+<div class="card border-0 shadow-sm">
+    <div class="card-body p-4">
+        <form action="{{ url_for('tambah_penduduk_proses') }}" method="POST">
+            <div class="row g-4">
+
+                <div class="col-12">
+                    <h5 class="border-bottom pb-2 mb-3 fw-bold">
+                        <i class="bi bi-person-badge me-2"></i>Informasi Identitas
+                    </h5>
+                </div>
+
+                <div class="col-md-6">
+                    <label class="form-label fw-semibold">NIK</label>
+                    <input type="text" name="nik_rifa" class="form-control"
+                        placeholder="Masukan 16 Digit NIK"
+                        required maxlength="16">
+                </div>
+
+                <div class="col-md-6">
+                    <label class="form-label fw-semibold">No. Kartu Keluarga</label>
+                    <select name="no_kk_rifa" id="select_kk" class="form-select select2-rifa" required>
+                        <option value="" selected disabled>Cari/Pilih Nomor Kartu Keluarga...</option>
+                        {% for kk in daftar_kk_rifa %}
+                        <option value="{{ kk.no_kk_rifa }}"
+                                data-alamat="{{ kk.alamat_rifa }}"
+                                data-rt="{{ kk.rt_rifa }}"
+                                data-rw="{{ kk.rw_rifa }}">
+                            {{ kk.no_kk_rifa }} - {{ kk.alamat_rifa }}
+                        </option>
+                        {% endfor %}
+                    </select>
+                    <div class="form-text text-muted">
+                        Jika tidak ada, silakan tambah data KK terlebih dahulu.
+                    </div>
+                </div>
+
+                <div class="col-md-12">
+                    <label class="form-label fw-semibold">Nama Lengkap</label>
+                    <input type="text" name="nama_lengkap_rifa" class="form-control"
+                        placeholder="Masukkan Nama Lengkap" required>
+                </div>
+
+                <div class="col-12 mt-5">
+                    <h5 class="border-bottom pb-2 mb-3 fw-bold">
+                        <i class="bi bi-geo-alt me-2"></i>Kelahiran & Domisili
+                    </h5>
+                </div>
+
+                <div class="col-md-6">
+                    <label class="form-label fw-semibold">Tempat Lahir</label>
+                    <input type="text" name="tempat_lahir_rifa" class="form-control"
+                        placeholder="Masukkan Tempat Lahir" required>
+                </div>
+
+                <div class="col-md-6">
+                    <label class="form-label fw-semibold">Tanggal Lahir</label>
+                    <input type="date" name="tanggal_lahir_rifa" class="form-control" required>
+                </div>
+
+                <div class="col-md-8">
+                    <label class="form-label fw-semibold text-muted">Alamat (Otomatis)</label>
+                    <input type="text" name="alamat_rifa" id="input_alamat"
+                        class="form-control bg-light"
+                        placeholder="Pilih KK untuk mengisi alamat"
+                        readonly required>
+                </div>
+
+                <div class="col-md-2">
+                    <label class="form-label fw-semibold text-muted">RT</label>
+                    <input type="text" name="rt_rifa" id="input_rt"
+                        class="form-control bg-light"
+                        placeholder="000"
+                        readonly required>
+                </div>
+
+                <div class="col-md-2">
+                    <label class="form-label fw-semibold text-muted">RW</label>
+                    <input type="text" name="rw_rifa" id="input_rw"
+                        class="form-control bg-light"
+                        placeholder="000"
+                        readonly required>
+                </div>
+
+                <div class="col-12 mt-5">
+                    <h5 class="border-bottom pb-2 mb-3 fw-bold">
+                        <i class="bi bi-info-circle me-2"></i>Informasi Tambahan
+                    </h5>
+                </div>
+
+                <div class="col-md-4">
+                    <label class="form-label fw-semibold">Jenis Kelamin</label>
+                    <select name="jenis_kelamin_rifa" class="form-select" required>
+                        <option value="" selected disabled>Pilih...</option>
+                        <option value="L">Laki-laki</option>
+                        <option value="P">Perempuan</option>
+                    </select>
+                </div>
+
+                <div class="col-md-4">
+                    <label class="form-label fw-semibold">Agama</label>
+                    <select name="agama_rifa" class="form-select" required>
+                        <option value="" selected disabled>Pilih...</option>
+                        <option value="Islam">Islam</option>
+                        <option value="Kristen">Kristen</option>
+                        <option value="Katolik">Katolik</option>
+                        <option value="Hindu">Hindu</option>
+                        <option value="Budha">Budha</option>
+                        <option value="Konghucu">Konghucu</option>
+                    </select>
+                </div>
+
+                <div class="col-md-4">
+                    <label class="form-label fw-semibold">Status Perkawinan</label>
+                    <select name="status_perkawinan_rifa" class="form-select">
+                        <option value="" selected disabled>Pilih...</option>
+                        <option value="Belum Kawin">Belum Kawin</option>
+                        <option value="Kawin">Kawin</option>
+                        <option value="Cerai Hidup">Cerai Hidup</option>
+                        <option value="Cerai Mati">Cerai Mati</option>
+                    </select>
+                </div>
+
+                <div class="col-md-6">
+                    <label class="form-label fw-semibold">Pendidikan Terakhir</label>
+                    <input type="text" name="pendidikan_rifa" class="form-control"
+                        placeholder="Masukkan Pendidikan Terakhir" required>
+                </div>
+
+                <div class="col-md-6">
+                    <label class="form-label fw-semibold">Pekerjaan</label>
+                    <input type="text" name="pekerjaan_rifa" class="form-control"
+                        placeholder="Masukkan Pekerjaan" required>
+                </div>
+
+                <div class="col-12 mt-4 text-end">
+                    <hr>
+                    <button type="reset" id="btn_reset" class="btn btn-light px-4 me-2">
+                        <i class="fa-solid fa-broom"></i> Bersihkan
+                    </button>
+                    <button type="submit" class="btn btn-primary px-4 fw-semibold shadow-sm">
+                        <i class="fa-solid fa-save me-2"></i> Simpan Data
+                    </button>
+                </div>
+
+            </div>
+        </form>
+    </div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+
+<script>
+$(document).ready(function() {
+    $('.select2-rifa').select2({
+        theme: 'bootstrap-5',
+        placeholder: "Cari/Pilih Nomor Kartu Keluarga...",
+        width: '100%'
+    });
+
+    $('.select2-rifa').on('select2:select', function (e) {
+        const selected = e.params.data.element;
+
+        document.getElementById('input_alamat').value = selected.dataset.alamat || '';
+        document.getElementById('input_rt').value = selected.dataset.rt || '';
+        document.getElementById('input_rw').value = selected.dataset.rw || '';
+    });
+
+    $('#btn_reset').on('click', function() {
+        $('.select2-rifa').val(null).trigger('change');
+    });
+});
+</script>
+
+{% endblock %}

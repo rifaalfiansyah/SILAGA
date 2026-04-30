@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - SILAGA</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <style>
+        body, html {
+            height: 100%;
+            margin: 0;
+            font-family: 'Inter', sans-serif;
+            background-color: #ffffff;
+            letter-spacing: -0.01em;
+        }
+        .split-left {
+            background: linear-gradient(135deg, #0d47a1, #1976d2);
+            color: white;
+            padding: 60px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .split-right {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 40px;
+            background: #f9fafb;
+        }
+        .form-wrapper {
+            width: 100%;
+            max-width: 420px;
+        }
+        .form-card {
+            background: white;
+            padding: 40px;
+            border-radius: 16px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+            border: 1px solid #f1f1f1;
+        }
+        .btn-gov {
+            background: linear-gradient(135deg, #111827, #1f2937);
+            color: white;
+            border-radius: 10px;
+            padding: 14px;
+            font-weight: 600;
+            font-size: 0.95rem;
+            border: none;
+            transition: all 0.25s ease;
+        }
+        .btn-gov:hover { 
+            transform: translateY(-1px);
+            opacity: 0.95; 
+            color: white;
+        }
+        h2 { font-weight: 700; color: #111827; }
+        label { font-weight: 500; font-size: 0.85rem; color: #667085; }
+    </style>
+</head>
+<body>
+
+    <div class="container-fluid h-100">
+        <div class="row h-100">
+            <div class="col-lg-6 d-none d-lg-flex split-left">
+                <div class="left-content">
+                    <h1 class="display-5 fw-bold">SILAGA</h1>
+                    <p class="mt-2 fs-5">Sistem Pelayanan Warga</p>
+                    <p class="mt-4 fs-6" style="color: rgba(255,255,255,0.85); font-weight: 300;">
+                        SILAGA atau Sistem Pelayanan Warga adalah platform digital yang dirancang untuk memudahkan warga dalam mengakses berbagai layanan secara daring.
+                    </p>
+                </div>
+            </div>
+
+            <div class="col-lg-6 split-right">
+                <div class="form-wrapper">
+                    <div class="form-card">
+
+                        <h2 class="mb-4">Login</h2>
+
+                        {% with messages = get_flashed_messages(with_categories=true) %}
+                            {% if messages %}
+                                {% for category, message in messages %}
+                                    <div class="alert alert-{{ category }} small border-0 shadow-sm mb-4" role="alert">
+                                        {{ message }}
+                                    </div>
+                                {% endfor %}
+                            {% endif %}
+                        {% endwith %}
+
+                        <form action="{{ url_for('login') }}" method="POST">
+                            <div class="mb-1">
+                                <label>Nomor Induk Kependudukan (NIK)</label>
+                            </div>
+                            <input type="text" 
+                                class="form-control" 
+                                name="nik_rifa" 
+                                required 
+                                maxlength="16"
+                                pattern="[0-9]{16}"
+                                placeholder="Masukan Nomor Induk Kependudukan (NIK)">
+                            <br>
+                            <div class="mb-1">
+                                <label>Kata Sandi</label>
+                            </div>
+                            <input type="password" class="form-control" name="password_rifa" required placeholder="Masukkan Kata Sandi">
+                            
+                            <button type="submit" class="btn btn-gov w-100 mt-3">
+                                Login
+                            </button>
+                        </form>
+
+                        <div class="mt-4 text-center">
+                            <span class="text-muted small">Belum terdaftar?</span> 
+                            <a href="{{ url_for('daftar') }}" class="fw-semibold small text-decoration-none ms-1">
+                                Buat Akun
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

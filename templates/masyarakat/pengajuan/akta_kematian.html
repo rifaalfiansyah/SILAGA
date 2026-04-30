@@ -1,0 +1,144 @@
+{% extends 'masyarakat/base.html' %} {% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <div>
+        <h3 class="fw-bold text-dark mb-0">Pengajuan Akta Kematian</h3>
+        <p class="text-muted mb-0">Lengkapi formulir di bawah ini untuk mengajukan pembuatan Akta Kematian.</p>
+    </div>
+    <div>
+        <a href="{{ url_for('daftar_pengajuan_masyarakat') }}" class="btn btn-light border fw-semibold shadow-sm px-4">
+            <i class="fa-solid fa-arrow-left"></i> Kembali
+        </a>
+    </div>
+</div>
+
+<div class="card border-0 shadow-sm">
+    <div class="card-body p-4">
+        <form action="{{ url_for('pengajuan_akta_kematian_proses') }}" method="POST" enctype="multipart/form-data">
+            <div class="row g-4">
+
+                <div class="col-12">
+                    <h5 class="border-bottom pb-2 mb-3 fw-bold">
+                        <i class="bi bi-person-x me-2"></i>Informasi Jenazah
+                    </h5>
+                </div>
+
+                <div class="col-md-12">
+                    <label class="form-label fw-semibold">NIK Jenazah</label>
+                    <input type="text" name="nik_jenazah_rifa" class="form-control"
+                        placeholder="Masukan 16 Digit NIK Jenazah"
+                        required maxlength="16" pattern="\d{16}" title="NIK harus 16 digit angka">
+                </div>
+
+                <div class="col-md-6">
+                    <label class="form-label fw-semibold">Tanggal Meninggal</label>
+                    <input type="date" name="tanggal_meninggal_rifa" class="form-control" required>
+                </div>
+
+                <div class="col-md-6">
+                    <label class="form-label fw-semibold">Tempat Meninggal</label>
+                    <input type="text" name="tempat_meninggal_rifa" class="form-control"
+                        placeholder="Contoh: RSUD Cibabat / Rumah" required>
+                </div>
+
+                <div class="col-md-12">
+                    <label class="form-label fw-semibold">Sebab Meninggal</label>
+                    <input type="text" name="sebab_meninggal_rifa" class="form-control"
+                        placeholder="Contoh: Sakit / Kecelakaan / Usia Lanjut" required>
+                </div>
+
+                <div class="col-12 mt-5">
+                    <h5 class="border-bottom pb-2 mb-3 fw-bold">
+                        <i class="bi bi-person-lines-fill me-2"></i>Informasi Pemohon
+                    </h5>
+                </div>
+
+                <div class="col-md-6">
+                    <label class="form-label fw-semibold">Hubungan dengan Jenazah</label>
+                    <select name="hubungan_pemohon_rifa" class="form-select" required>
+                        <option value="" selected disabled>Pilih Hubungan...</option>
+                        <option value="Suami/Istri">Suami/Istri</option>
+                        <option value="Anak">Anak</option>
+                        <option value="Orang Tua">Orang Tua</option>
+                        <option value="Saudara Kandung">Saudara Kandung</option>
+                        <option value="Lainnya">Lainnya</option>
+                    </select>
+                </div>
+
+                <div class="col-md-6">
+                    <label class="form-label fw-semibold">Keterangan Tambahan (Opsional)</label>
+                    <textarea name="keterangan_pemohon_rifa" class="form-control" rows="1" placeholder="Tulis keterangan jika ada..."></textarea>
+                </div>
+                <div class="col-12 mt-5">
+                    <h5 class="border-bottom pb-2 mb-3 fw-bold">
+                        <i class="bi bi-people me-2"></i>Informasi 2 Orang Saksi
+                    </h5>
+                    <div class="alert alert-warning py-2 mb-4">
+                        <i class="bi bi-exclamation-triangle me-2"></i> Diperlukan 2 orang saksi untuk menerbitkan Akta Kematian.
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <label class="form-label fw-semibold">NIK Saksi 1</label>
+                    <input type="text" name="nik_saksi_1_rifa" class="form-control" placeholder="16 Digit NIK Saksi 1" required maxlength="16" pattern="\d{16}">
+                </div>
+                <div class="col-md-4">
+                    <label class="form-label fw-semibold">Nama Lengkap Saksi 1</label>
+                    <input type="text" name="nama_saksi_1_rifa" class="form-control" placeholder="Nama sesuai KTP" required>
+                </div>
+                <div class="col-md-4">
+                    <label class="form-label fw-semibold">Upload KTP Saksi 1</label>
+                    <input type="file" name="file_ktp_saksi_1_rifa" class="form-control" accept=".jpg,.jpeg,.png,.pdf" required>
+                </div>
+
+                <div class="col-md-4 mt-4">
+                    <label class="form-label fw-semibold">NIK Saksi 2</label>
+                    <input type="text" name="nik_saksi_2_rifa" class="form-control" placeholder="16 Digit NIK Saksi 2" required maxlength="16" pattern="\d{16}">
+                </div>
+                <div class="col-md-4 mt-4">
+                    <label class="form-label fw-semibold">Nama Lengkap Saksi 2</label>
+                    <input type="text" name="nama_saksi_2_rifa" class="form-control" placeholder="Nama sesuai KTP" required>
+                </div>
+                <div class="col-md-4 mt-4">
+                    <label class="form-label fw-semibold">Upload KTP Saksi 2</label>
+                    <input type="file" name="file_ktp_saksi_2_rifa" class="form-control" accept=".jpg,.jpeg,.png,.pdf" required>
+                </div>
+
+                <div class="col-12 mt-5">
+                    <h5 class="border-bottom pb-2 mb-3 fw-bold">
+                        <i class="bi bi-file-earmark-arrow-up me-2"></i>Unggah Dokumen Persyaratan
+                    </h5>
+                    <div class="alert alert-info py-2 mb-4">
+                        <i class="bi bi-info-circle me-2"></i> Format file yang diizinkan: JPG, PNG, atau PDF. Maksimal 2MB per file.
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <label class="form-label fw-semibold">File KTP Jenazah</label>
+                    <input type="file" name="file_ktp_jenazah_rifa" class="form-control" accept=".jpg,.jpeg,.png,.pdf">
+                </div>
+
+                <div class="col-md-4">
+                    <label class="form-label fw-semibold">File Kartu Keluarga (KK)</label>
+                    <input type="file" name="file_kk_rifa" class="form-control" accept=".jpg,.jpeg,.png,.pdf" required>
+                </div>
+
+                <div class="col-md-4">
+                    <label class="form-label fw-semibold">Surat Keterangan Kematian (RS/Desa)</label>
+                    <input type="file" name="file_surat_kematian_rifa" class="form-control" accept=".jpg,.jpeg,.png,.pdf" required>
+                </div>
+
+                <div class="col-12 mt-4 text-end">
+                    <hr>
+                    <button type="reset" class="btn btn-light px-4 me-2">
+                        <i class="fa-solid fa-broom"></i> Bersihkan
+                    </button>
+                    <button type="submit" class="btn btn-primary px-4 fw-semibold shadow-sm">
+                        <i class="fa-solid fa-paper-plane me-2"></i> Ajukan Permohonan
+                    </button>
+                </div>
+
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

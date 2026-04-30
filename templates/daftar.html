@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Daftar Akun - SILAGA</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        body, html {
+            height: 100%;
+            margin: 0;
+            font-family: 'Inter', sans-serif;
+            background-color: #ffffff;
+            letter-spacing: -0.01em;
+        }
+        .split-left {
+            background: linear-gradient(135deg, #0d47a1, #1976d2);
+            color: white;
+            padding: 60px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        .split-right {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 40px;
+            background: #f9fafb;
+        }
+        .form-wrapper {
+            width: 100%;
+            max-width: 420px;
+        }
+        .form-card {
+            background: white;
+            padding: 40px;
+            border-radius: 16px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+            border: 1px solid #f1f1f1;
+        }
+        .btn-gov {
+            background: linear-gradient(135deg, #111827, #1f2937);
+            color: white;
+            border-radius: 10px;
+            padding: 14px;
+            font-weight: 600;
+            font-size: 0.95rem;
+            border: none;
+            transition: all 0.25s ease;
+        }
+        .btn-gov:hover {
+            transform: translateY(-1px);
+            opacity: 0.95;
+            color: white;
+        }
+        h2 {
+            font-weight: 700;
+            color: #111827;
+        }
+        label {
+            font-weight: 500;
+            font-size: 0.85rem;
+            color: #667085;
+            margin-bottom: 0.25rem;
+        }
+        .form-group {
+            margin-bottom: 1.25rem;
+        }
+        .checkbox-wrapper {
+            background-color: #f8f9fa;
+            border: 1px solid #e9ecef;
+            border-radius: 8px;
+            padding: 12px 15px;
+            margin-top: 0.5rem;
+        }
+        .form-check-label {
+            color: #111827;
+            font-weight: 500;
+            font-size: 0.9rem;
+            cursor: pointer;
+            margin-bottom: 0;
+            padding-top: 2px;
+        }
+        .form-check-input {
+            cursor: pointer;
+            width: 1.1em;
+            height: 1.1em;
+            margin-top: 0.2em;
+        }
+        #formNamaPendatang {
+            margin-top: 1rem;
+            padding-top: 1rem;
+            border-top: 1px dashed #dee2e6;
+        }
+    </style>
+</head>
+<body>
+<div class="container-fluid h-100">
+    <div class="row h-100">
+        <div class="col-lg-6 d-none d-lg-flex split-left">
+            <div>
+                <h1 class="display-5 fw-bold">SILAGA</h1>
+                <p class="mt-2 fs-5">Sistem Pelayanan Warga</p>
+                <p class="mt-4 fs-6" style="color: rgba(255,255,255,0.85); font-weight: 300;">
+                    Lengkapi data diri Anda untuk mendapatkan akses penuh ke layanan administrasi warga secara daring.
+                </p>
+            </div>
+        </div>
+        <div class="col-lg-6 split-right">
+            <div class="form-wrapper">
+                <div class="form-card">
+                    <h2 class="mb-4">Registrasi Akun</h2>
+                    <form action="{{ url_for('daftar') }}" method="POST">
+                        <div class="form-group">
+                            <label for="nik_rifa">NIK</label>
+                            <input type="text" class="form-control" id="nik_rifa" name="nik_rifa" required maxlength="16" pattern="[0-9]{16}" placeholder="Masukan Nomor Induk Kependudukan (NIK)">
+                            <div class="checkbox-wrapper">
+                                <div class="form-check d-flex align-items-center m-0">
+                                    <input class="form-check-input me-2" type="checkbox" id="checkPendatang">
+                                    <label class="form-check-label" for="checkPendatang">Saya adalah pendatang baru</label>
+                                </div>
+                            </div>
+                            <div id="formNamaPendatang" style="display: none;">
+                                <label for="inputNamaPendatang">Nama Lengkap</label>
+                                <input type="text" class="form-control" id="inputNamaPendatang" name="nama_lengkap_rifa" placeholder="Masukkan nama lengkap Anda">
+
+                                <label class="mt-3" for="inputTanggalLahirPendatang">Tanggal Lahir</label>
+                                <input type="date" class="form-control" id="inputTanggalLahirPendatang" name="tanggal_lahir_rifa">
+
+                                <label class="mt-3" for="inputTempatLahirPendatang">Tempat Lahir</label>
+                                <input type="text" class="form-control" id="inputTempatLahirPendatang" name="tempat_lahir_rifa">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="email_rifa">Email</label>
+                            <input type="email" class="form-control" id="email_rifa" name="email_rifa" required placeholder="nama@email.com">
+                        </div>
+                        <div class="form-group">
+                            <label for="no_telp_rifa">Nomor Telepon</label>
+                            <input type="text" class="form-control" id="no_telp_rifa" name="no_telp_rifa" required placeholder="08XXXXXXXX">
+                        </div>
+                        <div class="form-group">
+                            <label for="password_rifa">Kata Sandi</label>
+                            <input type="password" class="form-control" id="password_rifa" name="password_rifa" required placeholder="Masukan Kata Sandi">
+                        </div>
+                        <button type="submit" class="btn btn-gov w-100 mt-2">Daftar</button>
+                    </form>
+                    <div class="mt-4 text-center">
+                        <span class="text-muted small">Sudah terdaftar?</span> 
+                        <a href="{{ url_for('login') }}" class="fw-semibold small text-decoration-none ms-1">Login</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const checkPendatang = document.getElementById('checkPendatang');
+    const formPendatang = document.getElementById('formNamaPendatang');
+    const inputNama = document.getElementById('inputNamaPendatang');
+    const inputTanggal = document.getElementById('inputTanggalLahirPendatang');
+    const inputTempat = document.getElementById('inputTempatLahirPendatang');
+
+    checkPendatang.addEventListener('change', function() {
+        if (this.checked) {
+            formPendatang.style.display = 'block';
+            inputNama.setAttribute('required', 'required');
+            inputTanggal.setAttribute('required', 'required');
+            inputTempat.setAttribute('required', 'required');
+        } else {
+            formPendatang.style.display = 'none';
+            inputNama.removeAttribute('required');
+            inputTanggal.removeAttribute('required');
+            inputTempat.removeAttribute('required');
+            inputNama.value = '';
+            inputTanggal.value = '';
+            inputTempat.value = '';
+        }
+    });
+});
+</script>
+</body>
+</html>

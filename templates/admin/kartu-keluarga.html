@@ -1,0 +1,137 @@
+{% extends 'admin/base.html' %}
+
+{% block content %}
+<style>
+    div.dataTables_wrapper div.dataTables_filter input {
+        border-radius: 8px;
+        border: 1px solid #dee2e6;
+        padding: 6px 12px;
+    }
+    div.dataTables_wrapper div.dataTables_length select {
+        border-radius: 8px;
+        border: 1px solid #dee2e6;
+    }
+    table.dataTable>thead>tr>th {
+        font-size: 0.85rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        color: #4b5563;
+        border-bottom: 2px solid #e5e7eb;
+        padding: 10px 18px;
+    }
+    .dataTables_wrapper {
+        width: 100%;
+        margin: 0 auto;
+    }
+    th, td {
+        white-space: nowrap; 
+    }
+    .DTFC_RightBodyLiner {
+        overflow-y: hidden !important;
+    }
+    .main-table thead tr th:last-child, #tabelPenduduk tbody tr td:last-child {
+        background-color: #fff !important;
+        z-index: 1;
+        box-shadow: -2px 0 5px rgba(0,0,0,0.05);
+    }
+</style>
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <div>
+        <h3 class="fw-bold text-dark mb-0">Master Data Kartu Keluarga</h3>
+    </div>
+    <div>
+        <a href="{{ url_for('tambah_kartu_keluarga_page') }}" class="btn btn-primary fw-semibold shadow-sm px-4">
+            <i class="fa-solid fa-plus"></i> Tambah
+        </a>
+    </div>
+</div>
+
+<div class="card border-0 shadow-sm overflow-hidden">
+    <div class="card-body p-4">
+        <div class="table-responsive">
+            <table id="tabelKartuKeluarga" class="table table-hover align-middle w-100 text-nowrap">
+                <thead class="table-light">
+                    <tr>
+                        <th>No</th>
+                        <th>No. KK</th>
+                        <th>Kelurahan</th>
+                        <th>Alamat</th>
+                        <th>RT</th>
+                        <th>RW</th>
+                        <th>Aksi</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for kk in kartu_keluarga %}
+                    <tr>
+                        <td class="text-center">{{ loop.index }}</td>
+                        <td>{{ kk.no_kk_rifa }}</td>
+                        <td>{{ kk.nama_kelurahan_rifa }}</td>
+                        <td>{{ kk.alamat_rifa }}</td>
+                        <td>{{ kk.rt_rifa }}</td>
+                        <td>{{ kk.rw_rifa }}</td>
+                        <td>
+                            <div class="d-flex gap-1">
+                                <a href="{{ url_for('edit_kartu_keluarga_page', no_kk_rifa=kk.no_kk_rifa) }}" class="btn btn-sm btn-warning text-white" title="Edit Data">
+                                    <i class="fa-solid fa-pencil"></i> Edit
+                                </a>
+                                
+                                <a href="{{ url_for('hapus_kartu_keluarga', no_kk_rifa=kk.no_kk_rifa) }}" 
+                                class="btn btn-sm btn-danger text-white" 
+                                title="Hapus Data" 
+                                onclick="return confirm('Peringatan: Menghapus KK ini akan gagal jika masih ada data penduduk di dalamnya. Lanjutkan?');">
+                                    <i class="fa-solid fa-trash"></i> Hapus
+                                </a>
+                            </div>
+                        </td>
+                    </tr>
+                    {% else %}
+                    <tr>
+                        <td colspan="7" class="text-center text-muted py-4">Data kartu keluarga tidak ditemukan.</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+
+<script>
+    $(document).ready(function() {
+        $('#tabelKartuKeluarga').DataTable({
+            "scrollX": true,
+            "autoWidth": false,
+            "fixedColumns": {
+                "left": 0,
+                "right": 1
+            },
+            "lengthMenu": [[5, 10, 25, 50, -1], [5, 10, 25, 50, "Semua"]],
+            "pageLength": 10,
+            "language": {
+                "search": "Cari:",
+                "lengthMenu": "Tampilkan _MENU_ data",
+                "info": "Menampilkan _START_ sampai _END_ dari _TOTAL_ penduduk",
+                "infoEmpty": "Menampilkan 0 sampai 0 dari 0 penduduk",
+                "infoFiltered": "(disaring dari total _MAX_ penduduk)",
+                "zeroRecords": "Tidak ada data yang cocok dengan pencarian Anda.",
+                "paginate": {
+                    "first": "Awal",
+                    "last": "Akhir",
+                    "next": "Lanjut",
+                    "previous": "Kembali"
+                }
+            },
+            "order": [[ 2, "desc" ]],
+            "columnDefs": [
+                { "orderable": false, "targets": [6] },
+                { "className": "text-center", "targets": [0] }
+            ]
+        });
+    });
+</script>
+{% endblock %}

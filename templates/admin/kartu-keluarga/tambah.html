@@ -1,0 +1,52 @@
+{% extends 'admin/base.html' %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h3 class="fw-bold text-dark mb-0">Tambah Kartu Keluarga</h3>
+    <a href="{{ url_for('data_kartu_keluarga_admin') }}" class="btn btn-light border fw-semibold shadow-sm px-4">
+        <i class="fa-solid fa-arrow-left"></i> Kembali
+    </a>
+</div>
+
+<div class="card border-0 shadow-sm">
+    <div class="card-body p-4">
+        <form action="{{ url_for('tambah_kartu_keluarga_proses') }}" method="POST">
+            <div class="row g-3">
+                <div class="col-md-6">
+                    <label class="form-label fw-bold">Nomor Kartu Keluarga</label>
+                    <input type="text" name="no_kk_rifa" class="form-control" placeholder="16 Digit No. KK" required maxlength="16">
+                </div>
+                <div class="col-md-6">
+                    <label class="form-label fw-bold">Kelurahan</label>
+                    <select name="id_kelurahan_rifa" class="form-select" required>
+                        <option value="" disabled selected>Pilih Kelurahan...</option>
+                        {% for kel in daftar_kelurahan %}
+                        <option value="{{ kel.id_kelurahan_rifa }}">{{ kel.nama_kelurahan_rifa }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="col-md-12">
+                    <label class="form-label fw-bold">Alamat</label>
+                    <textarea name="alamat_rifa" class="form-control" rows="2" placeholder="Nama Jalan / Kampung" required></textarea>
+                </div>
+                <div class="col-md-6">
+                    <label class="form-label fw-bold">RT</label>
+                    <input type="number" name="rt_rifa" class="form-control" placeholder="Contoh: 001" required maxlength="3">
+                </div>
+                <div class="col-md-6">
+                    <label class="form-label fw-bold">RW</label>
+                    <input type="number" name="rw_rifa" class="form-control" placeholder="Contoh: 005" required maxlength="3">
+                </div>
+                <div class="col-md-6">
+                    <label class="form-label fw-bold">Tahun Terbit</label>
+                    <input type="number" name="tahun_terbit_rifa" class="form-control" placeholder="Contoh: 2023" required maxlength="4">
+                </div>
+                <div class="col-12 mt-4 text-end">
+                    <button type="submit" class="btn btn-primary px-4 fw-bold">
+                        <i class="fa-solid fa-save"></i> Simpan Data KK</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

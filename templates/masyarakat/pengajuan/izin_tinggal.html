@@ -1,0 +1,102 @@
+{% extends 'masyarakat/base.html' %} {% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <div>
+        <h3 class="fw-bold text-dark mb-0">Pengajuan Izin Tinggal</h3>
+        <p class="text-muted mb-0">Formulir pendataan penduduk pendatang atau izin tinggal sementara.</p>
+    </div>
+    <div>
+        <a href="{{ url_for('daftar_pengajuan_masyarakat') }}" class="btn btn-light border fw-semibold shadow-sm px-4">
+            <i class="fa-solid fa-arrow-left"></i> Kembali
+        </a>
+    </div>
+</div>
+
+<div class="card border-0 shadow-sm">
+    <div class="card-body p-4">
+        <form action="{{ url_for('pengajuan_izin_tinggal_proses') }}" method="POST" enctype="multipart/form-data">
+            <div class="row g-4">
+
+                <div class="col-12">
+                    <h5 class="border-bottom pb-2 mb-3 fw-bold">
+                        Informasi Domisili
+                    </h5>
+                </div>
+
+                <div class="col-md-12">
+                    <label class="form-label fw-semibold">Alamat Asal (Sesuai KTP)</label>
+                    <textarea name="alamat_asal_rifa" class="form-control bg-light" rows="2" 
+                        placeholder="Tuliskan alamat asli Anda di luar daerah..." required></textarea>
+                </div>
+
+                <div class="col-md-12">
+                    <label class="form-label fw-semibold">Alamat Tujuan (Cimahi)</label>
+                    <textarea name="alamat_tujuan_rifa" class="form-control bg-light" rows="2" 
+                        placeholder="Tuliskan alamat lengkap tempat tinggal Anda di Cimahi saat ini..." required></textarea>
+                </div>
+
+                <div class="col-md-12">
+                    <label class="form-label fw-semibold">Kelurahan Tujuan Domisili</label>
+                    <select name="id_kelurahan_rifa" class="form-select bg-light" required>
+                        <option value="" selected disabled>Pilih Kelurahan...</option>
+                        {% for kel in daftar_kelurahan %}
+                            <option value="{{ kel.id_kelurahan_rifa }}">{{ kel.nama_kelurahan_rifa }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <div class="col-12 mt-5">
+                    <h5 class="border-bottom pb-2 mb-3 fw-bold">
+                        Jangka Waktu Tinggal
+                    </h5>
+                </div>
+
+                <div class="col-md-6">
+                    <label class="form-label fw-semibold">Tanggal Mulai</label>
+                    <input type="date" name="tanggal_mulai_rifa" class="form-control bg-light" required>
+                </div>
+
+                <div class="col-md-6">
+                    <label class="form-label fw-semibold">Tanggal Berakhir</label>
+                    <input type="date" name="tanggal_berakhir_rifa" class="form-control bg-light" required>
+                </div>
+
+                <div class="col-md-12">
+                    <label class="form-label fw-semibold">Keterangan / Keperluan</label>
+                    <textarea name="keterangan_rifa" class="form-control bg-light" rows="2" 
+                        placeholder="Contoh: Bekerja di proyek konstruksi / Pendidikan singkat"></textarea>
+                </div>
+
+                <div class="col-12 mt-5">
+                    <h5 class="border-bottom pb-2 mb-3 fw-bold">
+                        Unggah Dokumen Pendukung
+                    </h5>
+                    <div class="alert alert-info py-2 mb-4 bg-info-subtle border-0">
+                        <i class="fa-solid fa-circle-info me-2"></i> Unggah foto KTP asli dan KK asal Anda (Format: JPG/PNG/PDF).
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <label class="form-label fw-semibold">File KTP Asal</label>
+                    <input type="file" name="file_ktp_rifa" class="form-control bg-light" accept=".jpg,.jpeg,.png,.pdf" required>
+                </div>
+
+                <div class="col-md-6">
+                    <label class="form-label fw-semibold">File Kartu Keluarga (KK) Asal</label>
+                    <input type="file" name="file_kk_rifa" class="form-control bg-light" accept=".jpg,.jpeg,.png,.pdf" required>
+                </div>
+
+                <div class="col-12 mt-5 text-end">
+                    <hr class="mb-4">
+                    <button type="reset" class="btn btn-light border px-4 me-2 fw-semibold">
+                        <i class="fa-solid fa-broom me-1"></i> Bersihkan
+                    </button>
+                    <button type="submit" class="btn btn-primary px-4 fw-semibold shadow-sm">
+                        <i class="fa-solid fa-paper-plane me-2"></i> Ajukan Izin Tinggal
+                    </button>
+                </div>
+
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

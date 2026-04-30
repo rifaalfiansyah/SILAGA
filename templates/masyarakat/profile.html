@@ -1,0 +1,78 @@
+{% extends 'masyarakat/base.html' %}
+
+{% block content %}
+<div class="row justify-content-center mb-5">
+    <div class="col">
+        
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="alert alert-{{ category }} alert-dismissible fade show shadow-sm border-0 rounded-3" role="alert">
+                        {{ message }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+
+        <div class="card border-0 shadow-sm overflow-hidden">
+            <div class="card-body p-4 p-md-5">
+                
+                <div class="mb-5">
+                    <div class="d-flex align-items-center mb-4 pb-3 border-bottom border-2">
+                        <div class="bg-primary bg-opacity-10 text-primary rounded-3 d-flex align-items-center justify-content-center me-3" style="width: 45px; height: 45px;">
+                            <i class="fa-solid fa-id-card fs-4"></i>
+                        </div>
+                        <h5 class="fw-bold mb-0">Biodata</h5>
+                    </div>
+                    
+                    <div class="px-2">
+                        <div class="row border-bottom py-2">
+                            <div class="col-sm-4 text-muted small fw-bold">NIK</div>
+                            <div class="col-sm-8 fw-medium text-dark">{{ user.nik_rifa }}</div>
+                        </div>
+                        
+                        <div class="row border-bottom py-2">
+                            <div class="col-sm-4 text-muted small fw-bold">No. KK</div>
+                            <div class="col-sm-8 fw-medium text-dark">{{ user.no_kk_rifa }}</div>
+                        </div>
+
+                        <div class="row border-bottom py-2">
+                            <div class="col-sm-4 text-muted small fw-bold">Nama Lengkap</div>
+                            <div class="col-sm-8 fw-medium text-dark">{{ user.nama_lengkap_rifa }}</div>
+                        </div>
+
+                        <div class="row border-bottom py-2">
+                            <div class="col-sm-4 text-muted small fw-bold">Tempat, Tanggal Lahir</div>
+                            <div class="col-sm-8 fw-medium text-dark">{{ user.tempat_lahir_rifa }}, {{ user.tanggal_lahir_rifa }}</div>
+                        </div>
+
+                        <div class="row border-bottom py-2">
+                            <div class="col-sm-4 text-muted small fw-bold d-flex align-items-center">Jenis Kelamin</div>
+                            <div class="col-sm-8 fw-medium text-dark">
+                                {% if user.jenis_kelamin_rifa == 'L' %}
+                                    Laki-laki
+                                {% else %}
+                                    Perempuan
+                                {% endif %}
+                            </div>
+                        </div>
+                        
+                        <div class="row border-bottom py-2">
+                            <div class="col-sm-4 text-muted small fw-bold">Alamat</div>
+                            <div class="col-sm-8 fw-medium text-dark">{{ user.alamat_rifa }} RT. {{ user.rt_rifa }} RW. {{ user.rw_rifa }}</div>
+                        </div>
+
+                        <div class="row py-2">
+                            <div class="col-sm-4 text-muted small fw-bold">Jenis Akun</div>
+                            <div class="col-sm-8 fw-medium text-dark fi text-capitalize">{{ user.role_rifa }}</div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        
+    </div>
+</div>
+{% endblock %}

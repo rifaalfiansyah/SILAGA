@@ -1,0 +1,119 @@
+{% extends 'petugas/base.html' %} {% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <div>
+        <h3 class="fw-bold text-dark mb-0">Detail Surat Pindah</h3>
+        <p class="text-muted mb-0">Informasi lengkap mengenai permohonan pindah Anda.</p>
+    </div>
+    <a href="{{ url_for('verifikasi_petugas') }}" class="btn btn-light border fw-semibold shadow-sm px-4">
+        <i class="fa-solid fa-arrow-left"></i> Kembali
+    </a>
+</div>
+
+<div class="card border-0 shadow-sm">
+    <div class="card-body p-4">
+        <div class="row g-4">
+            <div class="col-12">
+                <h5 class="border-bottom pb-2 mb-3 fw-bold">
+                    Data Kepindahan
+                </h5>
+            </div>
+            <div class="col-md-6">
+                <label class="form-label fw-semibold">Nama Pemohon</label>
+                <input type="text" class="form-control bg-light" value="{{ data.nama_pemohon }}" readonly>
+            </div>
+            <div class="col-md-6">
+                <label class="form-label fw-semibold">Tanggal Pindah</label>
+                <input type="text" class="form-control bg-light" value="{{ data.tanggal_pindah_rifa }}" readonly>
+            </div>
+            <div class="col-md-6">
+                <label class="form-label fw-semibold">Alasan Pindah</label>
+                <input type="text" class="form-control bg-light" value="{{ data.alasan_pindah_rifa }}" readonly>
+            </div>
+            <div class="col-md-6">
+                <label class="form-label fw-semibold">Kelurahan Tujuan</label>
+                <input type="text" class="form-control bg-light" value="{{ data.nama_kelurahan_rifa if data.nama_kelurahan_rifa else 'Luar Wilayah' }}" readonly>
+            </div>
+            <div class="col-md-6">
+                <label class="form-label fw-semibold">Alamat Asal</label>
+                <textarea class="form-control bg-light" rows="2" readonly>{{ data.alamat_asal_rifa }}</textarea>
+            </div>
+            <div class="col-md-6">
+                <label class="form-label fw-semibold">Alamat Tujuan</label>
+                <textarea class="form-control bg-light" rows="2" readonly>{{ data.alamat_tujuan_rifa }}</textarea>
+            </div>
+
+            <div class="col-12 mt-5">
+                <h5 class="border-bottom pb-2 mb-3 fw-bold">
+                    Anggota Keluarga yang Ikut
+                </h5>
+                <div class="table-responsive">
+                    <table class="table table-bordered align-middle">
+                        <thead class="table-light text-center">
+                            <tr>
+                                <th width="50">No</th>
+                                <th>NIK Anggota</th>
+                                <th>Status Hubungan</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% if anggota %}
+                                {% for a in anggota %}
+                                <tr class="text-center">
+                                    <td>{{ loop.index }}</td>
+                                    <td>{{ a.nik_rifa }}</td>
+                                    <td>{{ a.status_keluarga_rifa }}</td>
+                                </tr>
+                                {% endfor %}
+                            {% else %}
+                                <tr>
+                                    <td colspan="3" class="text-center text-muted italic">Pindah Sendirian</td>
+                                </tr>
+                            {% endif %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="col-12 mt-5">
+                <h5 class="border-bottom pb-2 mb-3 fw-bold">
+                    Dokumen Terlampir
+                </h5>
+            </div>
+            <div class="col-md-6 text-center">
+                <label class="form-label fw-bold d-block">Kartu Keluarga (KK)</label>
+                <div class="p-2 border rounded bg-light">
+                    <img src="{{ url_for('static', filename='uploads/' + data.file_kk_rifa) }}" class="img-fluid rounded" style="max-height: 250px;">
+                </div>
+            </div>
+            <div class="col-md-6 text-center">
+                <label class="form-label fw-bold d-block">KTP Pemohon</label>
+                <div class="p-2 border rounded bg-light">
+                    <img src="{{ url_for('static', filename='uploads/' + data.file_ktp_pemohon_rifa) }}" class="img-fluid rounded" style="max-height: 250px;">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="card border-0 shadow-sm mt-4">
+    <div class="card-body p-4">
+        <div class="col-12 text-end">
+            {% if data.status_pengajuan_rifa == 'menunggu' %}
+                <a href="{{ url_for('proses_verifikasi_pindah', id_p=data.id_surat_pindah_rifa, aksi='tolak') }}" 
+                   class="btn btn-danger px-4 fw-semibold me-2" onclick="return confirm('Tolak pengajuan ini?')">
+                    <i class="fa-solid fa-xmark me-2"></i> Tolak
+                </a>
+                <a href="{{ url_for('proses_verifikasi_pindah', id_p=data.id_surat_pindah_rifa, aksi='setujui') }}" 
+                   class="btn btn-success px-4 fw-semibold" onclick="return confirm('Setujui pengajuan ini?')">
+                    <i class="fa-solid fa-check me-2"></i> Setujui
+                </a>
+            {% else %}
+                <div class="alert alert-secondary d-inline-block px-5">
+                    Status: <strong>{{ data.status_pengajuan_rifa | upper }}</strong>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+{% endblock %}

@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SILAGA - Panel Petugas</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css" rel="stylesheet">
+    <link href="https://cdn.datatables.net/1.13.7/css/dataTables.bootstrap5.min.css" rel="stylesheet">
+
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8f9fa;
+        }
+
+        .sidebar {
+            position: fixed;
+            width: 260px;
+            height: 100vh;
+            background: #fff;
+            border-right: 1px solid #dee2e6;
+            z-index: 100;
+        }
+
+        .sidebar-brand {
+            padding: 30px 25px;
+            font-weight: 800;
+            font-size: 1.4rem;
+            color: #d39e00;
+            letter-spacing: -1px;
+        }
+
+        .sidebar-brand span {
+            display: block;
+            margin-top: 4px;
+            font-size: 1rem;
+            font-weight: 500;
+            color: #495057;
+        }
+
+        .nav-link {
+            display: flex;
+            align-items: center;
+            margin: 4px 15px;
+            padding: 12px 20px;
+            border-radius: 8px;
+            font-weight: 500;
+            color: #495057;
+            transition: 0.2s;
+        }
+
+        .nav-link i {
+            margin-right: 12px;
+            font-size: 1.2rem;
+        }
+
+        .nav-link:hover,
+        .nav-link.active {
+            background: #fff3cd;
+            color: #856404;
+        }
+
+        .main-content {
+            margin-left: 260px;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            height: 70px;
+            padding: 0 30px;
+            margin: -20px -20px 20px;
+            background: #fff;
+            border-bottom: 1px solid #dee2e6;
+        }
+
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            background: #ffc107;
+            color: #212529;
+            font-weight: bold;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .section-label {
+            font-size: 0.7rem;
+        }
+    </style>
+</head>
+<body>
+
+    <aside class="sidebar">
+        <div class="sidebar-brand">
+            SILAGA
+            <span>Panel Petugas</span>
+        </div>
+
+        <nav>
+            <div class="px-4 py-2 small text-muted text-uppercase fw-bold section-label">
+                Menu Utama
+            </div>
+
+            <a href="{{ url_for('dashboard_petugas') }}"
+               class="nav-link {% if 'dashboard' in request.endpoint %}active{% endif %}">
+                <i class="fa-solid fa-border-all"></i>
+                Dashboard
+            </a>
+
+            <a href="{{ url_for('verifikasi_petugas') }}"
+               class="nav-link {% if 'verifikasi' in request.endpoint %}active{% endif %}">
+                <i class="fa-solid fa-clipboard-check"></i>
+                Verifikasi
+            </a>
+
+            <div class="px-4 py-2 mt-3 small text-muted text-uppercase fw-bold section-label">
+                Pengaturan
+            </div>
+
+            <a href="{{ url_for('logout') }}"
+               class="nav-link text-danger mt-2 border border-danger border-opacity-25"
+               style="background:#fff0f1;"
+               onclick="return confirm('Apakah Anda yakin ingin logout?');">
+                <i class="fa-solid fa-right-from-bracket"></i>
+                Logout
+            </a>
+        </nav>
+    </aside>
+
+    <main class="main-content">
+        <header class="header">
+            <h5 class="mb-0 fw-bold">Portal Petugas</h5>
+
+            <div class="d-flex align-items-center">
+                <div class="text-end me-3">
+                    <div class="fw-bold small">
+                        {{ session['nama_lengkap_rifa'] }}
+                    </div>
+                    <div class="text-warning fw-bold" style="font-size: 0.7rem;">
+                        Petugas
+                    </div>
+                </div>
+
+                <div class="user-avatar">
+                    {{ session['nama_lengkap_rifa'][0] }}
+                </div>
+            </div>
+        </header>
+
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="alert alert-{{ category }} alert-dismissible fade show border-0 shadow-sm">
+                        {{ message }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                    </div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+
+        {% block content %}{% endblock %}
+    </main>
+
+    <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.7/js/dataTables.bootstrap5.min.js"></script>
+
+    {% block scripts %}{% endblock %}
+</body>
+</html>

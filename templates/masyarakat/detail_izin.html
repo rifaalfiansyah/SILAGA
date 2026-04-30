@@ -1,0 +1,65 @@
+{% extends 'masyarakat/base.html' %} {% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <div>
+        <h3 class="fw-bold text-dark mb-0">Detail Izin Tinggal</h3>
+        <p class="text-muted mb-0">Informasi lengkap mengenai permohonan domisili sementara Anda.</p>
+    </div>
+    <a href="{{ url_for('dashboard_masyarakat') }}" class="btn btn-light border fw-semibold shadow-sm px-4">
+        <i class="fa-solid fa-arrow-left"></i> Kembali
+    </a>
+</div>
+
+<div class="card border-0 shadow-sm">
+    <div class="card-body p-4">
+        <div class="row g-4">
+            <div class="col-12">
+                <h5 class="border-bottom pb-2 mb-3 fw-bold">
+                    Kepindahan & Domisili
+                </h5>
+            </div>
+            <div class="col-md-6">
+                <label class="form-label fw-semibold">Nama Pemohon</label>
+                <input type="text" class="form-control bg-light" value="{{ data.nama_pemohon }}" readonly>
+            </div>
+            <div class="col-md-6">
+                <label class="form-label fw-semibold">NIK Pemohon</label>
+                <input type="text" class="form-control bg-light" value="{{ data.nik_pemohon_rifa }}" readonly>
+            </div>
+            <div class="col-md-6">
+                <label class="form-label fw-semibold">Alamat Asal</label>
+                <textarea class="form-control bg-light" rows="2" readonly>{{ data.alamat_asal_rifa }}</textarea>
+            </div>
+            <div class="col-md-6">
+                <label class="form-label fw-semibold">Alamat Tujuan (Cimahi)</label>
+                <textarea class="form-control bg-light" rows="2" readonly>{{ data.alamat_tujuan_rifa }}</textarea>
+            </div>
+            <div class="col-md-6">
+                <label class="form-label fw-semibold">Kelurahan Domisili</label>
+                <input type="text" class="form-control bg-light" value="{{ data.nama_kelurahan_rifa }}" readonly>
+            </div>
+            <div class="col-md-6">
+                <label class="form-label fw-semibold">Jangka Waktu</label>
+                <input type="text" class="form-control bg-light" value="{{ data.tanggal_mulai_rifa }} s/d {{ data.tanggal_berakhir_rifa }}" readonly>
+            </div>
+
+            <div class="col-12 mt-5">
+                <h5 class="border-bottom pb-2 mb-3 fw-bold">
+                    Dokumen Terlampir
+                </h5>
+            </div>
+            <div class="col-md-6 text-center">
+                <label class="form-label fw-bold d-block">Kartu Keluarga (Asal)</label>
+                <div class="p-2 border rounded bg-light">
+                    <img src="{{ url_for('static', filename='uploads/' + data.file_kk_rifa) }}" class="img-fluid rounded" style="max-height: 250px;">
+                </div>
+            </div>
+            <div class="col-md-6 text-center">
+                <label class="form-label fw-bold d-block">KTP Pemohon</label>
+                <div class="p-2 border rounded bg-light">
+                    <img src="{{ url_for('static', filename='uploads/' + data.file_ktp_rifa) }}" class="img-fluid rounded" style="max-height: 250px;">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

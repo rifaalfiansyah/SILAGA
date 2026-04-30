@@ -1,0 +1,125 @@
+{% extends 'masyarakat/base.html' %}
+
+{% block content %}
+<style>
+    .card-layanan {
+        transition: all 0.3s ease;
+        cursor: pointer;
+    }
+    .card-layanan:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15) !important;
+    }
+    .icon-box {
+        width: 65px;
+        height: 65px;
+    }
+    .card-disabled {
+        opacity: 0.6;
+        cursor: not-allowed !important;
+        background-color: #f8f9fa;
+    }
+</style>
+
+<div class="row g-3 mb-4">
+    <div class="col-12 mb-2">
+        <h5 class="fw-bold">Daftar Layanan Pengajuan</h5>
+        {% if not punya_kk %}
+        <div class="alert alert-warning py-2 small mt-2 border-0">
+            <i class="fa-solid fa-circle-info me-2"></i> Akun Anda tercatat sebagai Pendatang (tidak memiliki KK lokal). Anda hanya dapat mengajukan Izin Tinggal.
+        </div>
+        {% endif %}
+    </div>
+    
+    <div class="col-12">
+        {% if punya_kk %}
+        <a href="{{ url_for('pengajuan_akta_kematian_page') }}" class="card border-0 shadow-sm text-decoration-none card-layanan">
+            <div class="card-body p-4 d-flex align-items-center">
+                <div class="bg-danger bg-opacity-10 text-danger rounded-3 d-flex align-items-center justify-content-center me-4 icon-box">
+                    <i class="fa-solid fa-file-signature fs-2"></i>
+                </div>
+                <div class="flex-grow-1">
+                    <h5 class="fw-bold text-dark mb-1">Akta Kematian</h5>
+                    <p class="text-muted mb-0 small">Ajukan permohonan penerbitan dokumen Akta Kematian secara digital.</p>
+                </div>
+                <div class="ms-3 text-muted">
+                    <i class="fa-solid fa-chevron-right fs-4"></i>
+                </div>
+            </div>
+        </a>
+        {% else %}
+        <div class="card border border-light shadow-sm text-decoration-none card-disabled">
+            <div class="card-body p-4 d-flex align-items-center">
+                <div class="bg-secondary bg-opacity-10 text-secondary rounded-3 d-flex align-items-center justify-content-center me-4 icon-box">
+                    <i class="fa-solid fa-file-signature fs-2"></i>
+                </div>
+                <div class="flex-grow-1">
+                    <h5 class="fw-bold text-secondary mb-1">
+                        Akta Kematian 
+                        <span class="badge bg-secondary ms-2" style="font-size: 0.65rem;"><i class="fa-solid fa-lock me-1"></i>Khusus Warga Tetap</span>
+                    </h5>
+                    <p class="text-muted mb-0 small">Ajukan permohonan penerbitan dokumen Akta Kematian secara digital.</p>
+                </div>
+                <div class="ms-3 text-muted">
+                    <i class="fa-solid fa-ban fs-4"></i>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+
+    <div class="col-12">
+        {% if punya_kk %}
+        <a href="{{ url_for('pengajuan_surat_pindah_page') }}" class="card border-0 shadow-sm text-decoration-none card-layanan">
+            <div class="card-body p-4 d-flex align-items-center">
+                <div class="bg-success bg-opacity-10 text-success rounded-3 d-flex align-items-center justify-content-center me-4 icon-box">
+                    <i class="fa-solid fa-truck-fast fs-2"></i>
+                </div>
+                <div class="flex-grow-1">
+                    <h5 class="fw-bold text-dark mb-1">Surat Pindah</h5>
+                    <p class="text-muted mb-0 small">Urus Surat Keterangan Pindah dengan mudah.</p>
+                </div>
+                <div class="ms-3 text-muted">
+                    <i class="fa-solid fa-chevron-right fs-4"></i>
+                </div>
+            </div>
+        </a>
+        {% else %}
+        <div class="card border border-light shadow-sm text-decoration-none card-disabled">
+            <div class="card-body p-4 d-flex align-items-center">
+                <div class="bg-secondary bg-opacity-10 text-secondary rounded-3 d-flex align-items-center justify-content-center me-4 icon-box">
+                    <i class="fa-solid fa-truck-fast fs-2"></i>
+                </div>
+                <div class="flex-grow-1">
+                    <h5 class="fw-bold text-secondary mb-1">
+                        Surat Pindah 
+                        <span class="badge bg-secondary ms-2" style="font-size: 0.65rem;"><i class="fa-solid fa-lock me-1"></i>Khusus Warga Tetap</span>
+                    </h5>
+                    <p class="text-muted mb-0 small">Urus Surat Keterangan Pindah dengan mudah.</p>
+                </div>
+                <div class="ms-3 text-muted">
+                    <i class="fa-solid fa-ban fs-4"></i>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+
+    <div class="col-12">
+        <a href="{{ url_for('pengajuan_izin_tinggal_page') }}" class="card border-0 shadow-sm text-decoration-none card-layanan">
+            <div class="card-body p-4 d-flex align-items-center">
+                <div class="bg-info bg-opacity-10 text-info rounded-3 d-flex align-items-center justify-content-center me-4 icon-box">
+                    <i class="fa-solid fa-house-user fs-2"></i>
+                </div>
+                <div class="flex-grow-1">
+                    <h5 class="fw-bold text-dark mb-1">Izin Tinggal</h5>
+                    <p class="text-muted mb-0 small">Pengajuan Surat Keterangan Tempat Tinggal untuk penduduk non-permanen.</p>
+                </div>
+                <div class="ms-3 text-muted">
+                    <i class="fa-solid fa-chevron-right fs-4"></i>
+                </div>
+            </div>
+        </a>
+    </div>
+</div>
+{% endblock %}

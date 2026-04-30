@@ -1,0 +1,171 @@
+{% extends 'admin/base.html' %}
+
+{% block content %}
+<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/select2-bootstrap-5-theme@1.3.0/dist/select2-bootstrap-5-theme.min.css" />
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <div>
+        <h3 class="fw-bold text-dark mb-0">Edit Data Penduduk</h3>
+    </div>
+    <div>
+        <a href="{{ url_for('data_penduduk_admin') }}" class="btn btn-light border fw-semibold shadow-sm px-4">
+            <i class="fa-solid fa-arrow-left"></i> Batal / Kembali
+        </a>
+    </div>
+</div>
+
+<div class="card border-0 shadow-sm">
+    <div class="card-body p-4">
+        <form action="{{ url_for('edit_penduduk_proses') }}" method="POST">
+            <div class="row g-4">
+
+                <div class="col-12">
+                    <h5 class="border-bottom pb-2 mb-3 fw-bold">
+                        <i class="bi bi-person-badge me-2"></i>Informasi Identitas
+                    </h5>
+                </div>
+
+                <div class="col-md-6">
+                    <label class="form-label fw-semibold">NIK (Tidak dapat diubah)</label>
+                    <input type="text" name="nik_rifa" class="form-control bg-light" 
+                           value="{{ penduduk.nik_rifa }}" readonly required>
+                </div>
+
+                <div class="col-md-6">
+                    <label class="form-label fw-semibold">No. Kartu Keluarga</label>
+                    <select name="no_kk_rifa" id="select_kk" class="form-select select2-rifa" required>
+                        {% for kk in daftar_kk_rifa %}
+                        <option value="{{ kk.no_kk_rifa }}"
+                                data-alamat="{{ kk.alamat_rifa }}"
+                                data-rt="{{ kk.rt_rifa }}"
+                                data-rw="{{ kk.rw_rifa }}"
+                                {% if kk.no_kk_rifa == penduduk.no_kk_rifa %}selected{% endif %}>
+                            {{ kk.no_kk_rifa }} - {{ kk.alamat_rifa }}
+                        </option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <div class="col-md-12">
+                    <label class="form-label fw-semibold">Nama Lengkap</label>
+                    <input type="text" name="nama_lengkap_rifa" class="form-control" 
+                           value="{{ penduduk.nama_lengkap_rifa }}" required>
+                </div>
+
+                <div class="col-12 mt-5">
+                    <h5 class="border-bottom pb-2 mb-3 fw-bold">
+                        <i class="bi bi-geo-alt me-2"></i>Kelahiran & Domisili
+                    </h5>
+                </div>
+
+                <div class="col-md-6">
+                    <label class="form-label fw-semibold">Tempat Lahir</label>
+                    <input type="text" name="tempat_lahir_rifa" class="form-control" 
+                           value="{{ penduduk.tempat_lahir_rifa }}" required>
+                </div>
+
+                <div class="col-md-6">
+                    <label class="form-label fw-semibold">Tanggal Lahir</label>
+                    <input type="date" name="tanggal_lahir_rifa" class="form-control" 
+                           value="{{ penduduk.tanggal_lahir_rifa }}" required>
+                </div>
+
+                <div class="col-md-8">
+                    <label class="form-label fw-semibold text-muted">Alamat (Otomatis dari KK)</label>
+                    <input type="text" name="alamat_rifa" id="input_alamat" 
+                           class="form-control bg-light" value="{{ penduduk.alamat_rifa }}" readonly required>
+                </div>
+
+                <div class="col-md-2">
+                    <label class="form-label fw-semibold text-muted">RT</label>
+                    <input type="text" name="rt_rifa" id="input_rt" 
+                           class="form-control bg-light" value="{{ penduduk.rt_rifa }}" readonly required>
+                </div>
+
+                <div class="col-md-2">
+                    <label class="form-label fw-semibold text-muted">RW</label>
+                    <input type="text" name="rw_rifa" id="input_rw" 
+                           class="form-control bg-light" value="{{ penduduk.rw_rifa }}" readonly required>
+                </div>
+
+                <div class="col-12 mt-5">
+                    <h5 class="border-bottom pb-2 mb-3 fw-bold">
+                        <i class="bi bi-info-circle me-2"></i>Informasi Tambahan
+                    </h5>
+                </div>
+
+                <div class="col-md-4">
+                    <label class="form-label fw-semibold">Jenis Kelamin</label>
+                    <select name="jk_rifa" class="form-select" required>
+                        <option value="L" {% if penduduk.jenis_kelamin_rifa == 'L' %}selected{% endif %}>Laki-laki</option>
+                        <option value="P" {% if penduduk.jenis_kelamin_rifa == 'P' %}selected{% endif %}>Perempuan</option>
+                    </select>
+                </div>
+
+                <div class="col-md-4">
+                    <label class="form-label fw-semibold">Agama</label>
+                    <select name="agama_rifa" class="form-select" required>
+                        <option value="Islam" {% if penduduk.agama_rifa == 'Islam' %}selected{% endif %}>Islam</option>
+                        <option value="Kristen" {% if penduduk.agama_rifa == 'Kristen' %}selected{% endif %}>Kristen</option>
+                        <option value="Katolik" {% if penduduk.agama_rifa == 'Katolik' %}selected{% endif %}>Katolik</option>
+                        <option value="Hindu" {% if penduduk.agama_rifa == 'Hindu' %}selected{% endif %}>Hindu</option>
+                        <option value="Budha" {% if penduduk.agama_rifa == 'Budha' %}selected{% endif %}>Budha</option>
+                        <option value="Konghucu" {% if penduduk.agama_rifa == 'Konghucu' %}selected{% endif %}>Konghucu</option>
+                    </select>
+                </div>
+
+                <div class="col-md-4">
+                    <label class="form-label fw-semibold">Status Perkawinan</label>
+                    <select name="status_kawin_rifa" class="form-select">
+                        <option value="Belum Kawin" {% if penduduk.status_perkawinan_rifa == 'Belum Kawin' %}selected{% endif %}>Belum Kawin</option>
+                        <option value="Kawin" {% if penduduk.status_perkawinan_rifa == 'Kawin' %}selected{% endif %}>Kawin</option>
+                        <option value="Cerai Hidup" {% if penduduk.status_perkawinan_rifa == 'Cerai Hidup' %}selected{% endif %}>Cerai Hidup</option>
+                        <option value="Cerai Mati" {% if penduduk.status_perkawinan_rifa == 'Cerai Mati' %}selected{% endif %}>Cerai Mati</option>
+                    </select>
+                </div>
+
+                <div class="col-md-6">
+                    <label class="form-label fw-semibold">Pendidikan Terakhir</label>
+                    <input type="text" name="pendidikan_rifa" class="form-control" 
+                           value="{{ penduduk.pendidikan_rifa }}" required>
+                </div>
+
+                <div class="col-md-6">
+                    <label class="form-label fw-semibold">Pekerjaan</label>
+                    <input type="text" name="pekerjaan_rifa" class="form-control" 
+                           value="{{ penduduk.pekerjaan_rifa }}" required>
+                </div>
+
+                <div class="col-12 mt-4 text-end">
+                    <hr>
+                    <button type="submit" class="btn btn-warning px-4 fw-semibold shadow-sm text-white">
+                        <i class="fa-solid fa-save me-2"></i> Simpan Perubahan
+                    </button>
+                </div>
+
+            </div>
+        </form>
+    </div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+
+<script>
+$(document).ready(function() {
+    $('.select2-rifa').select2({
+        theme: 'bootstrap-5',
+        width: '100%'
+    });
+
+    $('.select2-rifa').on('select2:select', function (e) {
+        const selected = e.params.data.element;
+
+        document.getElementById('input_alamat').value = selected.dataset.alamat || '';
+        document.getElementById('input_rt').value = selected.dataset.rt || '';
+        document.getElementById('input_rw').value = selected.dataset.rw || '';
+    });
+});
+</script>
+{% endblock %}

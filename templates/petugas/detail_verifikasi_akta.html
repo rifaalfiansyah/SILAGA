@@ -1,0 +1,177 @@
+{% extends 'petugas/base.html' %} {% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <div>
+        <h3 class="fw-bold text-dark mb-0">Detail Akta Kematian</h3>
+        <p class="text-muted mb-0">Informasi lengkap pengajuan yang telah Anda kirimkan.</p>
+    </div>
+    <div>
+        <a href="{{ url_for('verifikasi_petugas') }}" class="btn btn-light border fw-semibold shadow-sm px-4">
+            <i class="fa-solid fa-arrow-left"></i> Kembali
+        </a>
+    </div>
+</div>
+
+<div class="card border-0 shadow-sm">
+    <div class="card-body p-4">
+        <div class="row g-4">
+
+            <div class="col-12">
+                <h5 class="border-bottom pb-2 mb-3 fw-bold">
+                    <i class="bi bi-person-x me-2"></i>Informasi Jenazah
+                </h5>
+            </div>
+
+            <div class="col-md-6">
+                <label class="form-label fw-semibold">NIK Jenazah</label>
+                <input type="text" class="form-control bg-light" value="{{ data.nik_jenazah_rifa }}" readonly>
+            </div>
+
+            <div class="col-md-6">
+                <label class="form-label fw-semibold">Nama Lengkap Jenazah</label>
+                <input type="text" class="form-control bg-light" value="{{ data.nama_jenazah }}" readonly>
+            </div>
+
+            <div class="col-md-6">
+                <label class="form-label fw-semibold">Tanggal Meninggal</label>
+                <input type="text" class="form-control bg-light" value="{{ data.tanggal_meninggal_rifa }}" readonly>
+            </div>
+
+            <div class="col-md-6">
+                <label class="form-label fw-semibold">Tempat Meninggal</label>
+                <input type="text" class="form-control bg-light" value="{{ data.tempat_meninggal_rifa }}" readonly>
+            </div>
+
+            <div class="col-md-12">
+                <label class="form-label fw-semibold">Sebab Meninggal</label>
+                <input type="text" class="form-control bg-light" value="{{ data.sebab_meninggal_rifa }}" readonly>
+            </div>
+
+
+            <div class="col-12 mt-5">
+                <h5 class="border-bottom pb-2 mb-3 fw-bold">
+                    <i class="bi bi-person-lines-fill me-2"></i>Informasi Pemohon
+                </h5>
+            </div>
+
+            <div class="col-md-6">
+                <label class="form-label fw-semibold">Hubungan dengan Jenazah</label>
+                <input type="text" class="form-control bg-light" value="{{ data.hubungan_pemohon_rifa }}" readonly>
+            </div>
+
+            <div class="col-md-6">
+                <label class="form-label fw-semibold">Keterangan Tambahan</label>
+                <textarea class="form-control bg-light" rows="1" readonly>{{ data.keterangan_pemohon_rifa if data.keterangan_pemohon_rifa else '-' }}</textarea>
+            </div>
+
+
+            <div class="col-12 mt-5">
+                <h5 class="border-bottom pb-2 mb-3 fw-bold">
+                    <i class="bi bi-people me-2"></i>Informasi 2 Orang Saksi
+                </h5>
+            </div>
+
+            <div class="col-md-4">
+                <label class="form-label fw-semibold">NIK Saksi 1</label>
+                <input type="text" class="form-control bg-light" value="{{ data.nik_saksi_1_rifa }}" readonly>
+            </div>
+            <div class="col-md-4">
+                <label class="form-label fw-semibold">Nama Lengkap Saksi 1</label>
+                <input type="text" class="form-control bg-light" value="{{ data.nama_saksi_1_rifa }}" readonly>
+            </div>
+            <div class="col-md-4 text-center">
+                <label class="form-label fw-semibold d-block mb-2">KTP Saksi 1</label>
+                <div class="p-2 border rounded bg-light d-flex justify-content-center align-items-center" style="min-height: 120px;">
+                    {% if data.file_ktp_saksi_1_rifa %}
+                        <img src="{{ url_for('static', filename='uploads/' + data.file_ktp_saksi_1_rifa) }}" class="img-fluid rounded shadow-sm" style="max-height: 200px; object-fit: contain;">
+                    {% else %}
+                        <span class="text-muted fst-italic">File tidak ditemukan</span>
+                    {% endif %}
+                </div>
+            </div>
+
+            <div class="col-md-4 mt-4">
+                <label class="form-label fw-semibold">NIK Saksi 2</label>
+                <input type="text" class="form-control bg-light" value="{{ data.nik_saksi_2_rifa }}" readonly>
+            </div>
+            <div class="col-md-4 mt-4">
+                <label class="form-label fw-semibold">Nama Lengkap Saksi 2</label>
+                <input type="text" class="form-control bg-light" value="{{ data.nama_saksi_2_rifa }}" readonly>
+            </div>
+            <div class="col-md-4 mt-4 text-center">
+                <label class="form-label fw-semibold d-block mb-2">KTP Saksi 2</label>
+                <div class="p-2 border rounded bg-light d-flex justify-content-center align-items-center" style="min-height: 120px;">
+                    {% if data.file_ktp_saksi_2_rifa %}
+                        <img src="{{ url_for('static', filename='uploads/' + data.file_ktp_saksi_2_rifa) }}" class="img-fluid rounded shadow-sm" style="max-height: 200px; object-fit: contain;">
+                    {% else %}
+                        <span class="text-muted fst-italic">File tidak ditemukan</span>
+                    {% endif %}
+                </div>
+            </div>
+
+
+            <div class="col-12 mt-5">
+                <h5 class="border-bottom pb-2 mb-3 fw-bold">
+                    <i class="bi bi-file-earmark-arrow-up me-2"></i>Dokumen Persyaratan (Jenazah)
+                </h5>
+            </div>
+
+            <div class="col-md-4 text-center">
+                <label class="form-label fw-semibold d-block mb-2">File KTP Jenazah</label>
+                <div class="p-2 border rounded bg-light d-flex justify-content-center align-items-center" style="min-height: 150px;">
+                    {% if data.file_ktp_jenazah_rifa %}
+                        <img src="{{ url_for('static', filename='uploads/' + data.file_ktp_jenazah_rifa) }}" class="img-fluid rounded shadow-sm" style="max-height: 200px; object-fit: contain;">
+                    {% else %}
+                        <span class="text-muted fst-italic">File tidak ditemukan</span>
+                    {% endif %}
+                </div>
+            </div>
+
+            <div class="col-md-4 text-center">
+                <label class="form-label fw-semibold d-block mb-2">File Kartu Keluarga (KK)</label>
+                <div class="p-2 border rounded bg-light d-flex justify-content-center align-items-center" style="min-height: 150px;">
+                    {% if data.file_kk_rifa %}
+                        <img src="{{ url_for('static', filename='uploads/' + data.file_kk_rifa) }}" class="img-fluid rounded shadow-sm" style="max-height: 200px; object-fit: contain;">
+                    {% else %}
+                        <span class="text-muted fst-italic">File tidak ditemukan</span>
+                    {% endif %}
+                </div>
+            </div>
+
+            <div class="col-md-4 text-center">
+                <label class="form-label fw-semibold d-block mb-2">Surat Keterangan Kematian (RS/Desa)</label>
+                <div class="p-2 border rounded bg-light d-flex justify-content-center align-items-center" style="min-height: 150px;">
+                    {% if data.file_surat_kematian_rifa %}
+                        <img src="{{ url_for('static', filename='uploads/' + data.file_surat_kematian_rifa) }}" class="img-fluid rounded shadow-sm" style="max-height: 200px; object-fit: contain;">
+                    {% else %}
+                        <span class="text-muted fst-italic">File tidak ditemukan</span>
+                    {% endif %}
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<div class="card border-0 shadow-sm mt-4">
+    <div class="card-body p-4">
+        <div class="col-12 text-end">
+            {% if data.status_pengajuan_rifa == 'menunggu' or data.status_pengajuan_rifa == 'diproses' %}
+                <a href="{{ url_for('proses_verifikasi_akta', id_p=data.id_akta_kematian_rifa, aksi='tolak') }}" 
+                   class="btn btn-danger px-4 fw-semibold me-2" 
+                   onclick="return confirm('Yakin ingin menolak pengajuan ini?')">
+                    <i class="fa-solid fa-xmark me-2"></i> Tolak Pengajuan
+                </a>
+                <a href="{{ url_for('proses_verifikasi_akta', id_p=data.id_akta_kematian_rifa, aksi='setujui') }}" 
+                   class="btn btn-success px-4 fw-semibold" 
+                   onclick="return confirm('Setujui pengajuan ini? Status penduduk akan berubah menjadi Meninggal.')">
+                    <i class="fa-solid fa-check me-2"></i> Setujui Pengajuan
+                </a>
+            {% else %}
+                <div class="alert alert-secondary d-inline-block px-5">
+                    Status saat ini: <strong>{{ data.status_pengajuan_rifa | upper }}</strong>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}
